@@ -9,11 +9,24 @@ export const toolingsetdate = z.object({
 })
 
 export const createsupplier = z.object({
-    suppliername: z.string(),
+    toolingCreate_Id: z.coerce.number(),
+    supplierName: z.string(),
     quotationNo: z.string(),
-    quotationdate: z.string(),
-    price: z.number(),
+    quotationDate: z.string(),
+    price: z.coerce.number(),
+    selectSupplier_Id: z.coerce.number().optional().nullable(),
+    deleteFiles: z.array(z.string()).optional(),
 })
+
+export const updatestatusSupplier = z.object({
+    selectSupplier_Id: z.coerce.number(),
+    approve_UserId: z.coerce.number(),
+    decision: z.string().optional().nullable(),
+    approve: z.string(),
+})
+
+
 
 export type ToolingSetDate = z.infer<typeof toolingsetdate>;
 export type CreateSupplier = z.infer<typeof createsupplier>;
+export type UpdateStatusSupplier = z.infer<typeof updatestatusSupplier>;

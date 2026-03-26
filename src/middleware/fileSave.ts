@@ -4,6 +4,8 @@ import path from 'path';
 /**
  * จัดรูปแบบ Object สำหรับเก็บข้อมูลไฟล์ใน Database
  */
+
+
 export const formatFileSaveObject = (files: any[], type: string) => {
     if (!files || files.length === 0) return null;
 
@@ -38,6 +40,8 @@ export const deletePhysicalFile = (location: string, fileName: string) => {
 /**
  * ลบไฟล์ที่เพิ่งอัปโหลดเข้ามา (ใช้ตอน Error)
  */
+
+
 export const cleanupUploadedFiles = (files: any[]) => {
     if (!files || files.length === 0) return;
     for (const file of files) {
@@ -52,9 +56,8 @@ export const cleanupUploadedFiles = (files: any[]) => {
     }
 };
 
-/**
- * จัดการรวมไฟล์เก่า-ใหม่ และลบไฟล์ที่ต้องการทิ้ง
- */
+
+
 export const processFileUpdates = (existingFileObj: any, newFiles: any[], deleteFiles: string[], type: string) => {
     let finalObj = existingFileObj || { File_Location: `/public/${type}`, File_Save: [] };
 
