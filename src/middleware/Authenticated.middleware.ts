@@ -7,9 +7,9 @@ dotenv.config();
 
 // กำหนดโครงสร้างของข้อมูลที่จะอยู่ใน Token
 export interface JWTPayload extends JwtPayload {
-    id?: number;
+    userId: number;
     username?: string;
-    roles?: string[];
+    role?: string | string[];
 }
 
 declare global {
@@ -20,7 +20,7 @@ declare global {
     }
 }
 
-const JWT_SECRET = process.env.JWT_SECRET ;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!JWT_SECRET) {
     throw new Error("JWT_SECRET is not defined in the environment variables");
@@ -48,14 +48,18 @@ const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
 
 const authorizeRoles = (allowedRoles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
-        if (!req.user || !req.user.roles) {
+        if (!req.user || !req.user.role) {
             return res.status(403).json({
-                message: "Forbidden: User or roles not found.",
+                message: "Forbidden: User or role not found.",
             });
         }
 
-        const hasRequiredRole = req.user.roles.some((role) =>
-            allowedRoles.includes(role)
+        const userRoles = Array.isArray(req.user.role)
+            ? req.user.role
+            : [req.user.role];
+
+        const hasRequiredRole = userRoles.some((r) =>
+            allowedRoles.includes(r as string)
         );
 
         if (hasRequiredRole) {
@@ -69,7 +73,7 @@ const authorizeRoles = (allowedRoles: string[]) => {
 };
 
 const generateToken = (payload: any, expiresIn: any) => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn });
+    return jwt.sign(payload, JWT_SECRET, { expiresIn });
 };
 
 

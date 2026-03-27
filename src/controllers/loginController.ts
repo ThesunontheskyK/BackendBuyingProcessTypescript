@@ -43,6 +43,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
             name: user.name,
             imagePath: user.imagePath,
             permission: parsedPermission,
+            role: user.role,
 
         };
 
